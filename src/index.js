@@ -1,34 +1,54 @@
+import './index.scss';
 import { copy } from './lib/copy';
 import {
   bindEvent,
   removeEvent,
 } from './lib/event';
-const QRCode  = require("exports-loader?QRCode!./lib/qrcode");;
+import {
+  get,
+} from './lib/utils';
+const QRCode  = require("exports-loader?QRCode!./lib/qrcode");
 
-const global = {};
-const showQRCode = (data) => {
-  if (!global.qrcode) {
+const globalShots = {
+  'UA': {
+    key: 'navigator.userAgent',
+  },
+  'COOKIE': {
+    key: 'document.cookie',
+  },
+};
+
+const showQRCode = (shot, container, data) => {
+  if (!data) {
+    globalShots[shot].qrcode && globalShots[shot].qrcode.clear();
+    console.info('empty data');
+    return;
+  }
+  if (!globalShots[shot].qrcode) {
     const nodeQRCode = document.createElement('div');
-    nodeQRCode.setAttribute('id', 'qrcode');
-    global.qrcode = new QRCode(nodeQRCode, {
-      text: window.navigator.userAgent,
+    container.appendChild(nodeQRCode);
+    globalShots[shot].qrcode = new QRCode(nodeQRCode, {
+      text: data,
       width: 128,
       height: 128,
       colorDark : "#000000",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
     });
-    document.body.appendChild(nodeQRCode);
   } else {
-    global.qrcode.clear();
-    global.qrcode.makeCode(data);
+    globalShots[shot].qrcode.clear();
+    globalShots[shot].qrcode.makeCode(data);
   }
 }
 
-// copy
-const nodeUA = document.querySelector('#ua');
-ua.innerText = window.navigator.userAgent;
-bindEvent(btnCopy, 'click', () => {
-  copy(window.navigator.userAgent);
-  showQRCode(window.navigator.userAgent);
+Object.keys(globalShots).forEach(k => {
+  const data = get(window, globalShots[k].key);
+  const nodeText = document.querySelector(`#node_${k}`);
+  nodeText.innerText = data;
+
+  const nodeBtnCopy = document.querySelector(`#btnCopy_${k}`);
+  bindEvent(nodeBtnCopy, 'click', (e) => {
+    copy(data);
+    showQRCode(k, e.target.parentNode.parentElement.children[1], data);
+  });
 });

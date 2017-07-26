@@ -1,0 +1,27 @@
+$font-size: 12px;
+$color-primary: light-blue;
+$color-bg: #ccc;
+$color-border: #ccc;
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+.cell {
+  margin: 10px 0 0 0;
+  border: 1px solid $color-bg;
+  .cell-title {
+    background-color: $color-bg;
+    color: #fff;
+  }
+  .cell-body {
+    border-top: 1px solid $color-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .cell-primary {
+      flex: 1;
+    }
+  }
+  .cell-ft{}
+}
