@@ -13,8 +13,8 @@ const globalShots = {
   'UA': {
     key: 'navigator.userAgent',
   },
-  'COOKIE': {
-    key: 'document.cookie',
+  'HREF': {
+    key: 'location.href',
   },
 };
 
