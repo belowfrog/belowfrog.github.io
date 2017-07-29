@@ -1,22 +1,35 @@
-$font-size: 12px;
-$color-primary: light-blue;
+$font-size: 14px;
+$font-family: 'arial';
+$color-primary: #078898;
 $color-bg: #ccc;
 $color-border: #ccc;
+$color-red: #be0027;
+$color-orange: #e37222;
+$space-length: 10px;
 
-html, body {
+html, body, div, ul, table {
   padding: 0;
   margin: 0;
 }
+
+body {
+  font-size: $font-size;
+  font-family: $font-family;
+  padding: $space-length;
+}
+
 .cell {
-  margin: 10px 0 0 0;
+  margin: 0 0 $space-length 0;
   border: 1px solid $color-bg;
   word-break: break-word;
   .cell-title {
     background-color: $color-bg;
-    color: #fff;
+    color: $color-primary;
+    padding:0 $space-length;
+    line-height: 1.5;
   }
   .cell-body {
-    border-top: 1px solid $color-bg;
+    padding:$space-length;
     display: flex;
     align-items: center;
     justify-content: center;
