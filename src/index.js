@@ -8,13 +8,15 @@ import {
   get,
 } from './lib/utils';
 const QRCode  = require("exports-loader?QRCode!./lib/qrcode");
+import gen from './js/gen';
 
 const globalShots = {
   'UA': {
     key: 'navigator.userAgent',
+    target: window,
   },
-  'COOKIE': {
-    key: 'document.cookie',
+  'BURL': {
+    target: 'external'
   },
 };
 
@@ -42,6 +44,9 @@ const showQRCode = (shot, container, data) => {
 }
 
 Object.keys(globalShots).forEach(k => {
+  if (globalShots[k].target === 'external') {
+    return;
+  }
   const data = get(window, globalShots[k].key);
   const nodeText = document.querySelector(`#node_${k}`);
   nodeText.innerText = data;
@@ -52,3 +57,17 @@ Object.keys(globalShots).forEach(k => {
     showQRCode(k, e.target.parentNode.parentElement.children[1], data);
   });
 });
+
+bindEvent(btnCopy_BURL, 'click', (e) => {
+  const burl_oid = document.querySelector(`#burl_oid`).value;
+  const burl_prefix = document.querySelector(`#burl_prefix`).value;
+  const burl_salt = document.querySelector(`#burl_salt`).value;
+  const data = gen(burl_oid, burl_prefix, burl_salt);
+
+  node_BURL.innerText = data;
+  copy(data);
+  showQRCode('BURL', e.target.parentNode.parentElement.children[1], data);
+});
+
+
+

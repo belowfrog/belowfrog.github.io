@@ -10,6 +10,7 @@ html, body {
 .cell {
   margin: 10px 0 0 0;
   border: 1px solid $color-bg;
+  word-break: break-word;
   .cell-title {
     background-color: $color-bg;
     color: #fff;
